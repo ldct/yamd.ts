@@ -1,4 +1,8 @@
-﻿var format = function (s:String, ...x:Number[]) {
+﻿/// <reference path="node.d.ts" />
+
+import fs = require('fs');
+
+let format = function (s: String, ...x: Number[]) {
     function helper(s, args) {
         if (args.length === 0) {
             return s;
@@ -9,13 +13,11 @@
     return helper(s, Array.prototype.slice.call(arguments).slice(1));
 }
 
-var decode_execute = function (instruction, prev_is_lis) {
+let decode_execute = function (instruction, prev_is_lis = false) {
 
-    prev_is_lis = prev_is_lis || false;
-
-    var d = (instruction >> 11) & 0b11111
-    var s = (instruction >> 21) & 0b11111
-    var t = (instruction >> 16) & 0b11111
+    let d = (instruction >> 11) & 0b11111
+    let s = (instruction >> 21) & 0b11111
+    let t = (instruction >> 16) & 0b11111
 
     var i = instruction & 0b1111111111111111
 
@@ -28,12 +30,12 @@ var decode_execute = function (instruction, prev_is_lis) {
     }
 
     if ((instruction & 0b11111100000000000000011111111111) >>> 0 == 0b00000000000000000000000000100000) {
-        return format("add $%s $%s $%s", d, s, t);
+        return `add $${d} $${s} $${t}`
     }
-    else if ((instruction & 0b11111100000000000000011111111111) >>> 0 == 0b00000000000000000000000000100010) {
+    else if ((instruction & 0b11111100000000000000011111111111) >>> 0 === 0b00000000000000000000000000100010) {
         return `sub $${d} $${s} $${t}`
     }
-    else if ((instruction & 0b11111100000000001111111111111111) >>> 0 == 0b00000000000000000000000000011000) {
+    else if ((instruction & 0b11111100000000001111111111111111) >>> 0 === 0b00000000000000000000000000011000) {
         return "mult"
         //return ("mult ${}, ${}".format(s, t), "${}={}, ${}={}".format(s, r[s], t, r[t]))
     }
@@ -82,16 +84,32 @@ var decode_execute = function (instruction, prev_is_lis) {
         return "bne"
         //return "bne $%d $%d %d" % (s, t, i)
     }
-    else if ((instruction & 0b11111100000111111111111111111111) >>> 0 == 0b00000000000000000000000000001000) {
+    else if ((instruction & 0b11111100000111111111111111111111) >>> 0 === 0b00000000000000000000000000001000) {
         return format("jr $%s", s);
     }
-    else if ((instruction & 0b11111100000111111111111111111111) >>> 0 == 0b00000000000000000000000000001001) {
+    else if ((instruction & 0b11111100000111111111111111111111) >>> 0 === 0b00000000000000000000000000001001) {
         return format("jalr $%s", s);
     }
     else {
+        return "oops";
         //return instruction.toString();
     }
 
 }
 
-console.log(decode_execute(0b00000011110001001111000000100010));
+let decode_file = function (filename:string) {
+    fs.readFile(filename, 'utf-8', function (err, res) {
+        let instructions: string[] = res.split(', ').map(function (value) {
+            return value.replace(/\n/g, '').replace(/\r/g, '');
+        });
+        instructions.forEach(function (instruction) {
+            console.log(instruction, decode_execute(parseInt(instruction, 2)));
+        });
+    });
+}
+
+decode_file('mips.mc');
+
+// console.log('﻿00000000000000000010000000010100'.length);
+
+// console.log(decode_execute(0b00000011110001001111000000100010));
