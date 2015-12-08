@@ -24,6 +24,8 @@
   <ItemGroup>
     <Content Include="app.css" />
     <Content Include="index.html" />
+    <TypeScriptCompile Include="cpu.ts" />
+    <TypeScriptCompile Include="constants.ts" />
     <TypeScriptCompile Include="node.d.ts" />
     <Content Include="web.config" />
   </ItemGroup>
@@ -64,7 +66,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties tsconfig_1json__JSONSchema="http://json.schemastore.org/tsconfig" tsjconfig_1json__JSONSchema="tsgco" />
+      <UserProperties tsjconfig_1json__JSONSchema="tsgco" tsconfig_1json__JSONSchema="http://json.schemastore.org/tsconfig" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
