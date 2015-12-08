@@ -1,4 +1,9 @@
-﻿export let Reg = {
+﻿let zeroPad = function (num: number, places: number = 32): string {
+    var zero = places - num.toString(2).length + 1;
+    return Array(+(zero > 0 && zero)).join("0") + num.toString(2);
+}
+
+export let Reg = {
         'savedPC': 31,
         'stackPointer': 30,
         'framePointer': 29,
@@ -33,14 +38,3 @@ export interface State {
     registers: string[];
     memory: { [n: number]:string };
 }
-
-var initialState: State = {
-    PC: "00000000000000000000000000000000",
-    LO: "00000000000000000000000000000000",
-    HI: "00000000000000000000000000000000",
-    registers: [],
-    memory: {}
-}
-
-initialState.registers[30] = "00000001000000000000000000000000";
-initialState.registers[31] = "11111110111000011101111010101101";

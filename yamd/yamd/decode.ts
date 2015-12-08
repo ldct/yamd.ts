@@ -94,7 +94,7 @@ let decode_file = function (filename:string) {
     });
 }
 
-decode_file('mips.mc');
+decode_file('VarAccessN=2.mc');
 
 // console.log('﻿00000000000000000010000000010100'.length);
 

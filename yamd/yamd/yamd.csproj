@@ -27,6 +27,7 @@
     <TypeScriptCompile Include="cpu.ts" />
     <TypeScriptCompile Include="constants.ts" />
     <TypeScriptCompile Include="node.d.ts" />
+    <None Include="VarAccessN=2.mc" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
